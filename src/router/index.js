@@ -1,5 +1,4 @@
-import Vue from 'vue'
-import Router from 'vue-router'
+
 import Home from '@/components/Home'
 import Login from '@/components/Login'
 import Dashboard from '@/components/Dashboard'
@@ -7,10 +6,8 @@ import Customer from '@/components/Customer'
 import Sourse from '@/components/advertise/Sourse'
 import HomePage from '@/components/advertise/HomePage'
 import Sets from '@/components/Sets'
-Vue.use(Router)
 
-export default new Router({
-  routes: [
+let routes = [
     {
       path: '/login',
       component: Login,
@@ -77,5 +74,7 @@ export default new Router({
       	}
       ]
     }
-  ]
-})
+  ];
+
+  export default routes;
+

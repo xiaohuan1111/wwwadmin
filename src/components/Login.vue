@@ -16,6 +16,7 @@
 	</div>
 </template>
 <script>
+	import { requestLogin } from '@/api/api'
 	export default {
 		data(){
 			return{
@@ -47,11 +48,23 @@
 			fnLogin(formName){
 				this.$refs[formName].validate((valid) => {
 					if(valid){
-						this.$router.push({path: '/dashboard'});
-						this.$message({
-							message: '恭喜您登录成功！',
-							type: 'success'
-						});
+						var loginParams = { userName: this.formLogin.userName, passWord: this.formLogin.passWord}
+						requestLogin(loginParams).then(data => {
+							if(data.code === 500){
+								this.$message({
+									type: 'error',
+									message: data.msg
+								})
+							}
+							if(data.code === 200){
+								this.$message({
+									type: 'success',
+									message: data.msg
+								});
+								sessionStorage.setItem('user',loginParams);
+								this.$router.push({path: '/dashboard'});
+							}
+						})
 						
 					}
 				})
