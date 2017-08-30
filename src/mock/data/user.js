@@ -13,7 +13,7 @@ const Customers = [];
 
 for (var i = 0; i <86; i++) {
 	Customers.push(Mock.mock({
-		'id|+1':1,
+		'id':i,
 		'name': Mock.mock('@cname'),
 		'mobile|1':/^1[0-9]{10}$/ ,
 		'age|3-15':1,

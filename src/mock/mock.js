@@ -1,7 +1,7 @@
 import axios from 'axios'
 import mockAdapter from 'axios-mock-adapter'
 import {loginUser, Customers} from '@/mock/data/user'
-
+let newCustomers = Customers;
 
 export default {
 	bootstrap(){
@@ -33,24 +33,41 @@ export default {
 		mock.onGet('/customer/list').reply(config => {
 			return new Promise((resolve, reject) => {
 				setTimeout(() => {
-					resolve([200, { code: 200, data: Customers }])
+					resolve([200, { code: 200, msg: '删除成功' }])
 				}, 1000)
 			})
 		});
 
 		// 获取分页用户列表
 		mock.onGet('/customer/listPage').reply( config => {
-			console.log(config)
-			//let {pageSize, currentPage} = config.data;
-			//let totle = Customers.length;
-			/*var customerPage = Customers.filter((u, index) => {
-				return index < currentPage * pageSize &&  index > (currentPage - 1) * pageSize
+			
+			let {pageSize, currentPage} = config.params;
+			let total = Customers.length;
+
+			var customerPage = newCustomers.filter((u, index) => {
+				return index > (currentPage - 1) * pageSize && index <= currentPage * pageSize;
 			});
-			return new Promise(() => {
+			return new Promise((resolve, reject) => {
 				setTimeout(() => {
-					resolve(200,{code: 200, totlePage: totle,data: customerPage })
+					resolve([200,{code: 200, total: total ,data: customerPage }])
 				},1000)
-			})*/
+			})
+		});
+
+		// 删除客户
+		mock.onGet("/customer/delete").reply(config => {
+			let id = config.id;
+			newCustomers = newCustomers.filter((u,index) => {
+				if(u.id === id){
+					return false;
+				}
+				return true;
+			});
+			return new Promise((resolve, reject) => {
+				setTimeout(() => {
+					resolve([200,{code: 200, data: newCustomers}])
+				},1000)
+			})
 		})
 	}
 }

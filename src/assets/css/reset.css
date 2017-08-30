@@ -47,3 +47,8 @@ table {
 	border-collapse: collapse;
 	border-spacing: 0;
 }
+
+/* 工具 */
+.toolbar{
+	padding:5px 0;
+}

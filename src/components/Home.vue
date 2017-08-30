@@ -27,12 +27,12 @@
             <span slot="title">{{item.children[0].name}}</span>
           </el-menu-item>
         </template>
-    </el-menu>
+      </el-menu>
+    </div>
+    <div class="mainContain">
+      <router-view></router-view>
+    </div>
   </div>
-  <div class="mainContain">
-    <router-view></router-view>
-  </div>
-</div>
 </div>
 </template>
 
@@ -97,6 +97,8 @@
     }
     .mainContain{
       flex: auto;
+      padding:0 5px;
+      overflow: auto;
     }
   }
 </style>

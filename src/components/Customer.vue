@@ -1,6 +1,9 @@
 <template>
 	<div id="customer">
-	<el-table :data="tableData" border style="width: 100%">
+	<el-row class="toolbar">
+		<el-button type="primary">批量转出</el-button>
+	</el-row>
+	<el-table :data="tableData" border v-loading="listLoading">
 		<el-table-column type="selection" width="55"></el-table-column>
     	<el-table-column prop="name" label="姓名"width="120"></el-table-column>
     	<el-table-column prop="age" label="年龄" width="120"></el-table-column>
@@ -12,7 +15,7 @@
 			<template scope="scope">
 				<el-button
 				size="small"
-				@click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+				@click="handleOut(scope.$index, scope.row)" type="primary">转出</el-button>
 				<el-button
 				size="small"
 				type="danger"
@@ -20,45 +23,61 @@
 			</template>
 		</el-table-column>
 	</el-table>
-	<div class="block">
-		<el-pagination
-			@size-change="handleSizeChange"
-			@current-change="handleCurrentChange"
-			:current-page="currentPage"
-			:page-sizes="[100, 200, 300, 400]"
-			:page-size="pageSize"
-			layout="total, sizes, prev, pager, next, jumper"
-			:total="listTotal">
-	</el-pagination>
-	</div>
+	<el-row class="toolbar">
+		<div class="block" style="float:right;">
+			<el-pagination
+				@size-change="handleSizeChange"
+				@current-change="handleCurrentChange"
+				:current-page="currentPage"
+				:page-sizes='[10,20,30]'
+				:page-size="pageSize"
+				:total='total'
+				layout="total,sizes,prev, pager, next,jumper"
+				>
+			</el-pagination>
+		</div>
+	</el-row>
 </div>
 </template>
 <script>
-	import { customerListPage } from '@/api/api'
+	import { customerListPage, deleteCustomer } from '@/api/api'
 	export default{
 		data(){
 			return{
 				tableData: [],
-				pageSize: 10,
-				listTotal: 0,
-				currentPage: 1
+				total: 0,
+				pageSize:10,
+				page: 1,
+				currentPage: 1,
+				listLoading: false
 			}
 		},
 		methods:{
 			getCustomerList(){
-				let para = { pageSize: this.pageSize, currentPage: this.currentPage };
+				this.listLoading = true;
+				let para = {'pageSize': this.pageSize ,'currentPage': this.currentPage };
 				customerListPage(para).then((res) => {
-					//this.tableData = res.data.data
+					this.listLoading = false;
+					this.total = res.data.total;
+					this.tableData = res.data.data;
 				})
 			},
-			handleEdit(){
+			handleOut(){
 
+			},
+			handleDelete(index, row){
+				let para = row;
+				deleteCustomer(para).then((res) => {
+					this.getCustomerList();
+				})
 			},
 			handleSizeChange(size){
 				this.pageSize = size;
+				this.getCustomerList();
 			},
 			handleCurrentChange(page){
 				this.currentPage = page;
+				this.getCustomerList();
 			}
 		},
 		mounted(){
