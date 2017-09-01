@@ -1,9 +1,6 @@
 <template>
-	<div id="sourse">
-		渠道来源统计分析
-		人数统计
-		来源统计
-		pc/移动 统计
+	<div id="addNews">
+		添加新闻
 	</div>
 </template>
 <script>
@@ -12,7 +9,7 @@
 	}
 </script>
 <style lang="scss">
-	#sourse{
+	#addNews{
 		
 	}
 </style>

@@ -1,6 +1,6 @@
 <template>
-	<div id="homepage">
-		网站首页推广
+	<div id="newsClassify">
+		新闻分类管理
 	</div>
 </template>
 <script>
@@ -9,7 +9,7 @@
 	}
 </script>
 <style lang="scss">
-	#homepage{
+	#newsClassify{
 		
 	}
 </style>

@@ -13,9 +13,9 @@
    </div>
    <div id="homeMain">
     <div class="mainNav" :class="{ NavCollapse : !isCollapse , NavShow : isCollapse}">
-      <el-menu router class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" :collapse="isCollapse">
-        <template v-for="(item, key) in $router.options.routes" v-if="!item.hidden">
-          <el-submenu v-if="!item.leaf" index="1">
+      <el-menu router class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" :collapse="isCollapse" unique-opened>
+        <template v-for="(item, key, index) in $router.options.routes" v-if="!item.hidden" >
+          <el-submenu v-if="!item.leaf" :index="item.index" :key="item.path">
             <template slot="title">
               <i :class="item.iconCls"></i>
               <span slot="title">{{ item.name }}</span>
@@ -40,7 +40,7 @@
   export default {
     data () {
       return {
-        isCollapse: true
+        isCollapse: false
       }
     },
     methods: {
