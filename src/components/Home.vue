@@ -4,14 +4,17 @@
       <div class="logo" :class="{ NavShow : !isCollapse}">
         <span v-if="!isCollapse">WWW AdMINM</span>
       </div>
-      <div class="toolBar" v-model="isCollapse">
-       <i class="fa fa-bars" @click="isCollapse = !isCollapse"></i>
-     </div>
-     <div class="userCenter">
-
-     </div>
-   </div>
-   <div id="homeMain">
+      <div class="toolbox">
+          <div class="toolBar" v-model="isCollapse">
+            <i class="fa fa-bars" @click="isCollapse = !isCollapse"></i>
+          </div>
+          <div class="userCenter">
+            <span>{{sysUserName }}</span>
+            <img :src="sysUserAvatar">
+          </div>
+      </div>
+  </div>
+  <div id="homeMain">
     <div class="mainNav" :class="{ NavCollapse : !isCollapse , NavShow : isCollapse}">
       <el-menu router class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" :collapse="isCollapse" unique-opened>
         <template v-for="(item, key, index) in $router.options.routes" v-if="!item.hidden" >
@@ -40,7 +43,9 @@
   export default {
     data () {
       return {
-        isCollapse: false
+        isCollapse: false,
+        sysUserName :'',
+        sysUserAvatar: ''
       }
     },
     methods: {
@@ -50,7 +55,18 @@
       },
       handleClose(key, keypath){
         console.log(key, keypath);
+      },
+      getLoginUser(){
+        let loginUser = sessionStorage.getItem('user');
+        if(loginUser){
+          loginUser = JSON.parse(loginUser);
+          this.sysUserName = loginUser.name;
+          this.sysUserAvatar = loginUser.avatar;
+        }
       }
+    },
+    mounted(){
+      this.getLoginUser();
     }
   }
 </script>
@@ -72,16 +88,33 @@
       text-align: center;
       color:#fff;
     }
-    .toolBar{
-      width:60px;
-      height:60px;
-      text-align: center;
-      line-height: 60px;
-      color:#fff;
-    }
     .NavShow{
       flex: 0 0 200px;
     }
+    .toolbox{
+      display: flex;
+      justify-content: space-between;
+      width:100%;
+        .toolBar{
+          width:60px;
+          height:60px;
+          text-align: center;
+          line-height: 60px;
+          color:#fff;
+        }
+        .userCenter{
+          display: flex;
+          align-items: center;
+          span{color:#fff;}
+          img{
+            height:40px;
+            margin:10px;
+            border-radius: 50%;
+          }
+        }
+    }
+    
+    
   }
   #homeMain{
     flex:auto;

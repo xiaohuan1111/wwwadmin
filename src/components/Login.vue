@@ -61,7 +61,7 @@
 									type: 'success',
 									message: data.msg
 								});
-								sessionStorage.setItem('user',loginParams);
+								sessionStorage.setItem('user',JSON.stringify(data.user));
 								this.$router.push({path: '/dashboard'});
 							}
 						})
