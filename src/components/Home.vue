@@ -44,6 +44,13 @@
         </el-menu>
       </div>
       <div class="mainContain">
+        <div class="pathBar">
+            <el-breadcrumb separator="/">
+            <el-breadcrumb-item v-for="item in $route.matched" :key="item.path">
+                  {{ item.name }}
+            </el-breadcrumb-item>
+          </el-breadcrumb>
+        </div>
         <router-view></router-view>
       </div>
     </div>
@@ -99,7 +106,7 @@
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped lang="scss">
+<style lang="scss">
   .home{
     height: 100vh;
     display: flex;
@@ -143,14 +150,16 @@
         }
       }
     }
-    
-    
+
+
   }
   #homeMain{
     flex:auto;
     display: flex;
+    min-width:1208px;
+    background-color:#F9FAFC;
     .mainNav{
-      background-color:#eee;
+      background-color:#eef1f6;
     }
     .NavCollapse{
       flex: 0 0 200px;
@@ -158,9 +167,15 @@
     .NavShow{
       flex: 0 0 64px;
     }
+    .pathBar{
+      text-align: right;
+      padding:5px;
+      background-color: #fff;
+      margin:0 0 5px 0;
+    }
     .mainContain{
       flex: auto;
-      padding:0 5px;
+      padding:5px;
       overflow: auto;
     }
   }
