@@ -5,38 +5,49 @@
         <span v-if="!isCollapse">WWW AdMINM</span>
       </div>
       <div class="toolbox">
-          <div class="toolBar" v-model="isCollapse">
-            <i class="fa fa-bars" @click="isCollapse = !isCollapse"></i>
-          </div>
-          <div class="userCenter">
-            <span>{{sysUserName }}</span>
-            <img :src="sysUserAvatar">
-          </div>
+        <div class="toolBar" v-model="isCollapse">
+          <i class="fa fa-bars" @click="isCollapse = !isCollapse"></i>
+        </div>
+        <div class="toolRight">
+          <el-badge :value="12" class="addCustomer">
+            <el-button class="fa fa-user-plus" type="default"></el-button>
+          </el-badge>
+          <el-dropdown @command="userFn">
+            <div class="el-dropdown-link userCenter">
+              <span>{{sysUserName }}</span>
+              <img :src="sysUserAvatar">
+            </div>
+            <el-dropdown-menu slot="dropdown">
+              <el-dropdown-item command="changePwd"><i style="margin-right:4px;" class="fa fa-lock"></i>修改密码</el-dropdown-item>
+              <el-dropdown-item command="logout"><i style="color:red;margin-right:4px;" class="fa fa-power-off"></i>退出登录</el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
+        </div>
       </div>
-  </div>
-  <div id="homeMain">
-    <div class="mainNav" :class="{ NavCollapse : !isCollapse , NavShow : isCollapse}">
-      <el-menu router class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" :collapse="isCollapse" unique-opened>
-        <template v-for="(item, key, index) in $router.options.routes" v-if="!item.hidden" >
-          <el-submenu v-if="!item.leaf" :index="item.index" :key="item.path">
-            <template slot="title">
+    </div>
+    <div id="homeMain">
+      <div class="mainNav" :class="{ NavCollapse : !isCollapse , NavShow : isCollapse}">
+        <el-menu router class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" :collapse="isCollapse" unique-opened>
+          <template v-for="(item, key, index) in $router.options.routes" v-if="!item.hidden" >
+            <el-submenu v-if="!item.leaf" :index="item.index" :key="item.path">
+              <template slot="title">
+                <i :class="item.iconCls"></i>
+                <span slot="title">{{ item.name }}</span>
+              </template>
+              <el-menu-item v-for="child in item.children" :index="child.path" :key="child.path">{{ child.name }}</el-menu-item>
+            </el-submenu>
+            <el-menu-item v-if="item.leaf" :index="item.children[0].path" :key="item.children[0].path">
               <i :class="item.iconCls"></i>
-              <span slot="title">{{ item.name }}</span>
-            </template>
-            <el-menu-item v-for="child in item.children" :index="child.path" :key="child.path">{{ child.name }}</el-menu-item>
-          </el-submenu>
-          <el-menu-item v-if="item.leaf" :index="item.children[0].path" :key="item.children[0].path">
-            <i :class="item.iconCls"></i>
-            <span slot="title">{{item.children[0].name}}</span>
-          </el-menu-item>
-        </template>
-      </el-menu>
-    </div>
-    <div class="mainContain">
-      <router-view></router-view>
+              <span slot="title">{{item.children[0].name}}</span>
+            </el-menu-item>
+          </template>
+        </el-menu>
+      </div>
+      <div class="mainContain">
+        <router-view></router-view>
+      </div>
     </div>
   </div>
-</div>
 </template>
 
 <script>
@@ -63,6 +74,22 @@
           this.sysUserName = loginUser.name;
           this.sysUserAvatar = loginUser.avatar;
         }
+      },
+      userFn(command){
+        if(command === 'changePwd'){
+          this.changePwd();
+        };
+        if(command === 'logout'){
+          this.logout();
+        }
+      },
+      changePwd(){
+        this.$router.replace({path: '/sets'});
+      },
+      logout(){
+        console.log(this.$router);
+        this.$router.push({path: '/login'});
+        sessionStorage.removeItem('user');
       }
     },
     mounted(){
@@ -95,23 +122,26 @@
       display: flex;
       justify-content: space-between;
       width:100%;
-        .toolBar{
-          width:60px;
-          height:60px;
-          text-align: center;
-          line-height: 60px;
-          color:#fff;
+      .toolBar{
+        width:60px;
+        height:60px;
+        text-align: center;
+        line-height: 60px;
+        color:#fff;
+      }
+      .addCustomer{
+        margin-right:20px;
+      }
+      .userCenter{
+        display: flex;
+        align-items: center;
+        span{color:#fff;}
+        img{
+          height:40px;
+          margin:10px;
+          border-radius: 50%;
         }
-        .userCenter{
-          display: flex;
-          align-items: center;
-          span{color:#fff;}
-          img{
-            height:40px;
-            margin:10px;
-            border-radius: 50%;
-          }
-        }
+      }
     }
     
     
