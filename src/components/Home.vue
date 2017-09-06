@@ -9,8 +9,8 @@
           <i class="fa fa-bars" @click="isCollapse = !isCollapse"></i>
         </div>
         <div class="toolRight">
-          <el-badge :value="12" class="addCustomer">
-            <el-button class="fa fa-user-plus" type="default"></el-button>
+          <el-badge :value="12" :hidden="badgeHide"  class="addCustomer">
+            <el-button type="warning" @click.prevent="checkNewCustomer">新增客户</el-button>
           </el-badge>
           <el-dropdown @command="userFn">
             <div class="el-dropdown-link userCenter">
@@ -63,7 +63,8 @@
       return {
         isCollapse: false,
         sysUserName :'',
-        sysUserAvatar: ''
+        sysUserAvatar: '',
+        badgeHide: false
       }
     },
     methods: {
@@ -97,6 +98,9 @@
         console.log(this.$router);
         this.$router.push({path: '/login'});
         sessionStorage.removeItem('user');
+      },
+      checkNewCustomer(){
+          this.badgeHide = true
       }
     },
     mounted(){
@@ -137,7 +141,13 @@
         color:#fff;
       }
       .addCustomer{
-        margin-right:20px;
+        margin-right:40px;
+        cursor: pointer;
+        a{
+          color: #fff;
+          text-decoration: none;
+          padding-right:6px;
+        }
       }
       .userCenter{
         display: flex;
