@@ -8,7 +8,6 @@ import 'font-awesome/css/font-awesome.css'
 import App from './App'
 import routes from './router/index'
 import Mock from './mock/mock'
-
 Vue.use(ElementUI)
 Vue.use(VueRouter)
 Vue.config.productionTip = false
@@ -36,3 +35,4 @@ new Vue({
   template: '<App/>',
   components: { App }
 });
+
